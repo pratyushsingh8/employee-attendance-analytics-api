@@ -45,8 +45,4 @@ Open `http://127.0.0.1:8000/docs` to explore the endpoints through Swagger UI. C
 
 The API uses epoch milliseconds for timestamps and `YYYY-MM-DD` dates for attendance records. See `openapi.yaml` and `DATA_MODEL.md` for the API contract and data model.
 
-## Submission
 
-The main application is `app/main.py`. Dependencies are listed in `requirements.txt`; implementation findings and design choices are documented in `REVIEW.md` and `DECISIONS.md`.
-
-Do not commit environment files, credentials, virtual environments, or private candidate materials.
