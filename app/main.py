@@ -18,7 +18,7 @@ from typing import Optional, Literal
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query, Path
 from pydantic import BaseModel, ConfigDict, StrictInt, field_validator, Field
-from pymongo import MongoClient, ASCENDING, DESCENDING 
+from pymongo import MongoClient, ASCENDING, DESCENDING
 from pymongo.errors import DuplicateKeyError, PyMongoError
 
 load_dotenv()
@@ -50,7 +50,7 @@ def create_indexes():
         name="ix_employees_department_emp_code",
     )
 
-    
+
     db.employees.create_index(
         [("joined_on", ASCENDING)],
         name="ix_employees_joined_on",
@@ -325,7 +325,7 @@ def punch_in(body: PunchInIn):
             status_code=404,
             detail="Employee not found",
         )
-    
+
     if body.punched_at is not None:
         ts = datetime.fromtimestamp(
             body.punched_at / 1000,
@@ -369,7 +369,7 @@ def punch_in(body: PunchInIn):
         "half_day": False,
         "history": [],
     }
-    
+
     try:
         db.attendance_logs.insert_one(doc)
     except DuplicateKeyError:
@@ -582,7 +582,7 @@ def regularize_attendance(
             detail="Attendance record not found",
         )
 
-    
+
     allowed_statuses = {
         "PRESENT",
         "WFH",
@@ -654,7 +654,7 @@ def regularize_attendance(
                 detail="A presence status requires punch_in",
             )
 
-        
+
 
         # Punch-out must follow punch-in and be within 24 hours.
         if new_punch_out is not None:
@@ -665,7 +665,7 @@ def regularize_attendance(
                     status_code=422,
                     detail="punch_out must follow punch_in within 24 hours",
                 )
-    
+
     # Convert stored MongoDB datetimes to IST.
     # MongoDB may return naive datetimes representing UTC.
     def as_ist(value):
@@ -789,7 +789,7 @@ def regularize_attendance(
             detail="The request does not change the attendance record",
         )
 
-    
+
     # Build the audit-history entry.
     now_utc = datetime.now(timezone.utc).replace(microsecond=0)
 
@@ -1060,7 +1060,7 @@ def employee_monthly(emp_code: str, month: str):
     metrics = results[0] if results else {}
 
     present_days = metrics.get("present_days", 0)
-    
+
     attendance_pct = (
         float(
             (
@@ -1335,7 +1335,7 @@ def department_summary(
     month_start_str = month_start.isoformat()
     next_month_start_str = next_month_start.isoformat()
 
-    
+
     month_end_str = (next_month_start - timedelta(days=1)).isoformat()
 
     pipeline = build_department_summary_pipeline(
@@ -1467,7 +1467,7 @@ def late_leaderboard(
     next_month_start_str = next_month_start.isoformat()
 
     # Aggregate attendance by employee, then join employee details.
-    
+
     pipeline = build_late_leaderboard_pipeline(
         month_start_str=month_start_str,
         next_month_start_str=next_month_start_str,
@@ -1775,7 +1775,7 @@ def department_trend(
         tzinfo=timezone.utc,
     )
 
-    
+
     pipeline = build_department_trend_pipeline(
         department=department,
         start_datetime=start_datetime,
@@ -1842,7 +1842,7 @@ def explain_endpoint(
     Return MongoDB executionStats for an endpoint's main query.
     """
 
-    
+
     if endpoint == "employee_monthly":
         # These parameters are required for monthly analytics.
         if not emp_code or not month:
@@ -1919,7 +1919,7 @@ def explain_endpoint(
             "explain": explain_json,
         }
 
-    
+
     if endpoint == "department_summary":
         if month is None:
             raise HTTPException(
@@ -1979,7 +1979,7 @@ def explain_endpoint(
             "explain": explain_json,
         }
 
-    
+
     if endpoint == "late_leaderboard":
         if month is None:
             raise HTTPException(
@@ -2032,7 +2032,7 @@ def explain_endpoint(
         }
 
 
-    
+
     if endpoint == "department_trend":
         if not from_date or not to_date:
             raise HTTPException(
