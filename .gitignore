@@ -1,0 +1,23 @@
+﻿.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+# Local backups and private assignment materials
+main_backup.py
+PROBLEM_STATEMENT.docx
+
+# Local test fixtures and seed data
+test_late_ties.py
+sample_data/
+sample_seed.py
+
+# Local test fixtures and seed data
+test_late_ties.py
+sample_data/
+sample_seed.py
