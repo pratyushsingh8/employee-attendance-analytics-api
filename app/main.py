@@ -226,8 +226,7 @@ class PunchInIn(BaseModel):
 
     emp_code: str
     punched_at: Optional[StrictInt] = None
-    status: Literal["PRESENT", "WFH", "ON_DUTY", "ABSENT", "LEAVE"] = "PRESENT"
-
+    status: Literal["PRESENT", "WFH", "ON_DUTY"] = "PRESENT"
 
 class PunchOutIn(BaseModel):
     model_config = ConfigDict(strict=True)
